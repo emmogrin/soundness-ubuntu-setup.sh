@@ -1,38 +1,38 @@
-cat << 'EOF' > ~/.soundness-setup.sh
 #!/bin/bash
+
 echo "=========================================="
-echo "  NOW ENTERING UBUNTU ENVIRONMENT         "
-echo "       SAINT KHEN — @ADMIRKHEN            "
+echo "  NOW ENTERING UBUNTU ENVIRONMENT"
+echo "       SAINT KHEN — @ADMIRKHEN"
 echo "=========================================="
 
+# Update and upgrade Ubuntu
 apt update && apt upgrade -y
 
-# Install dependencies
-apt install -y build-essential protobuf-compiler curl wget pkg-config \
-libcrypto++-dev libc6-dev openssl libssl-dev
+# Install required dependencies
+apt install -y build-essential protobuf-compiler curl wget pkg-config libcrypto++-dev libc6-dev openssl libssl-dev
 
-# Install Soundness CLI
-curl -sSL raw.githubusercontent.com/soundnesslabs/soundness-layer/main/soundnessup/install | bash
+# Install soundnessup
+echo "🚀 Installing soundnessup..."
+curl -sSL https://raw.githubusercontent.com/soundnesslabs/soundness-layer/main/soundnessup/install | bash
 
 # Install Rust
+echo "🦀 Installing Rust..."
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-source $HOME/.cargo/env
 
-# Finalize installation
+# Source Rust and bash environment
+source "$HOME/.bashrc"
+source "$HOME/.cargo/env"
+
+# Update & install soundnessup toolchain
 soundnessup install
 soundnessup update
 
-# Generate Soundness Key
+# Generate keypair with your tag
 soundness-cli generate-key --name my-key
 soundness-cli export-key --name my-key
 
-echo ""
 echo "=========================================="
-echo "   SETUP COMPLETE BY SAINT KHEN           "
-echo "  PUBLIC KEY + SEED ABOVE — SAVE IT NOW!  "
-echo "    TWITTER: https://x.com/ADMIRKHEN      "
+echo "✅ DONE — Script by SAINT KHEN (@ADMIRKHEN)"
+echo "Follow me on Twitter: https://twitter.com/admirkhen"
+echo "GitHub: https://github.com/emmogrin"
 echo "=========================================="
-EOF
-
-chmod +x ~/.soundness-setup.sh
-bash ~/.soundness-setup.sh
