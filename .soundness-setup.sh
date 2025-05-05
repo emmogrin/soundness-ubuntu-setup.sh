@@ -1,47 +1,37 @@
 #!/bin/bash
 
-echo "=========================================="
-echo "  NOW ENTERING UBUNTU ENVIRONMENT"
-echo "       SAINT KHEN — @ADMIRKHEN"
-echo "=========================================="
+# Script for Soundness Setup in Ubuntu inside Termux
+# Created by @admirkhen | Twitter: https://twitter.com/admirkhen
+# This script will set up Rust, Soundness CLI, and generate a key pair after logging into Ubuntu via proot-distro.
 
-# Update & upgrade
-apt update && apt upgrade -y
+# Echoing information to the user
+echo "Running Ubuntu Setup... Please log into Ubuntu using 'proot-distro login ubuntu' before proceeding."
 
-# Essential tools
-apt install -y curl wget git build-essential pkg-config libssl-dev protobuf-compiler
+# Step 1: Install Rust in the Ubuntu environment
+echo "Step 1: Installing Rust..."
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash
 
-# Install Rust (skip if already installed)
-if ! command -v cargo &> /dev/null; then
-  curl https://sh.rustup.rs -sSf | sh -s -- -y
-  source $HOME/.cargo/env
-fi
+# Step 2: Configure the shell to use Rust
+echo "Step 2: Configuring shell for Rust..."
+source $HOME/.bashrc
 
-# Clone the repo
-cd ~
-rm -rf soundness_cli
-git clone https://github.com/OxcloneNetwork/soundness_cli.git
-cd soundness_cli
+# Step 3: Install soundnessup using the curl command
+echo "Step 3: Installing soundnessup..."
+curl -sSL https://raw.githubusercontent.com/soundnesslabs/soundness-layer/main/soundnessup/install | bash
 
-# Build binaries
-cargo build --release
+# Step 4: Source bashrc again to apply soundnessup
+source $HOME/.bashrc
 
-# Add binaries to PATH
-mkdir -p $HOME/.cargo/bin
-cp target/release/soundness-cli $HOME/.cargo/bin/
-cp target/release/soundnessup $HOME/.cargo/bin/
+# Step 5: Install Soundness CLI tool
+echo "Step 5: Installing soundness CLI..."
+soundnessup install
 
-# Source env and test
-source $HOME/.cargo/env
-echo
-echo "✅ Binaries installed successfully!"
-echo
+# Step 6: Generate a new key pair
+echo "Step 6: Generating a new key pair..."
+soundness-cli generate-key --name my-key
 
-soundness-cli --help || echo "⚠️ soundness-cli not found"
-soundnessup --help || echo "⚠️ soundnessup not found"
+echo "🎉 Setup completed successfully! Your key pair has been generated."
+echo "Remember to save your generated seed phrase and public key safely!"
 
-echo "=========================================="
-echo "✅ DONE — Script by SAINT KHEN (@ADMIRKHEN)"
-echo "Follow me: https://twitter.com/admirkhen"
-echo "GitHub:    https://github.com/emmogrin"
-echo "=========================================="
+# Final note with @admirkhen branding
+echo "Script by @admirkhen - Follow me on Twitter for updates: https://twitter.com/admirkhen"
