@@ -2,27 +2,25 @@
 
 # Script for Soundness Setup in Ubuntu inside Termux
 # Created by @admirkhen | Twitter: https://twitter.com/admirkhen
-# This script will set up Rust, Soundness CLI, and generate a key pair after logging into Ubuntu via proot-distro.
 
-# Echoing information to the user
 echo "Running Ubuntu Setup... Please log into Ubuntu using 'proot-distro login ubuntu' before proceeding."
 
 # Step 1: Install Rust in the Ubuntu environment
 echo "Step 1: Installing Rust..."
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash
 
-# Step 2: Configure the shell to use Rust
+# Step 2: Configure shell for Rust
 echo "Step 2: Configuring shell for Rust..."
-source $HOME/.bashrc
+export PATH="$HOME/.cargo/bin:$PATH"   # <- makes Rust tools available now
 
-# Step 3: Install soundnessup using the curl command
+# Step 3: Install soundnessup
 echo "Step 3: Installing soundnessup..."
 curl -sSL https://raw.githubusercontent.com/soundnesslabs/soundness-layer/main/soundnessup/install | bash
 
-# Step 4: Source bashrc again to apply soundnessup
-source $HOME/.bashrc
+# Step 4: Apply path change for soundnessup immediately
+export PATH="$HOME/.cargo/bin:$PATH"   # <- ensures soundnessup works now
 
-# Step 5: Install Soundness CLI tool
+# Step 5: Install Soundness CLI
 echo "Step 5: Installing soundness CLI..."
 soundnessup install
 
